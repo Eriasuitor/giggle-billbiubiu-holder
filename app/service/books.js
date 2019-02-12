@@ -9,7 +9,7 @@ class BookService extends Service {
     }
 
     async findAll() {
-        this.ctx.body = await this.ctx.model.Bill.findAll();
+        this.ctx.body = await this.ctx.model.Book.findAll();
     }
 
     // findLastOne(bookId) {

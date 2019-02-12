@@ -10,18 +10,9 @@ class BillController extends Controller {
 
   async index() {
     this.ctx.body = await this.ctx.service.books.findAll();
+    this.ctx.status = 200
   }
 }
-
-const synchronizeRule = generalRule({
-  id: { type: 'int', min: 0 },
-  name: { type: 'string', max: '64' },
-  wallets: listRule(walletRule),
-  bills: listRule(billRule),
-  transfers: listRule(transferRule),
-  incomes: listRule(incomeRule),
-})
-
 const generalRule = rule => Object.assign(rule, {
   createdAt: { type: 'int', min: 0 },
   lastEditedAt: { type: 'int', min: 0 },
@@ -59,6 +50,15 @@ const incomeRule = generalRule({
   walletId: { type: 'int', min: 0 },
   date: { type: 'int', min: 0 },
   amount: { type: 'int', min: 0 },
+})
+
+const synchronizeRule = generalRule({
+  id: { type: 'int', min: 0 },
+  name: { type: 'string', max: '64' },
+  wallets: listRule(walletRule),
+  bills: listRule(billRule),
+  transfers: listRule(transferRule),
+  incomes: listRule(incomeRule),
 })
 
 module.exports = BillController;
