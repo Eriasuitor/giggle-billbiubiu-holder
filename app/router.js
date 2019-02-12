@@ -5,6 +5,7 @@
  */
 module.exports = app => {
   const { router, controller } = app;
-  router.get('/bills', controller.bills.index)
-  router.post('/bills/synchronization', controller.bills.synchronize)
+  router.get('/book/:bookId', controller.bills.index);
+  router.post('/bills/synchronization', controller.bills.synchronize);
+  router.get('/bills/last', controller.bills.last);
 };

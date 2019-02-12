@@ -1,15 +1,15 @@
 'use strict';
 
 module.exports = app => {
-  console.log(app.model)
-  const User = app.model.define('records', {
+  const Bill = app.model.define('bill', {
     id: { type: app.Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+    bookId: { type: app.Sequelize.STRING, allowNull: false, isUUID: 4 },
     doc: { type: app.Sequelize.JSON, allowNull: false },
     createdAt: { type: app.Sequelize.DATE, allowNull: false },
     updatedAt: { type: app.Sequelize.DATE, allowNull: false },
     createdBy: { type: app.Sequelize.DATE, allowNull: false, type: app.Sequelize.STRING(32) },
-    lastEditBy: { type: app.Sequelize.DATE, allowNull: false, type: app.Sequelize.STRING(32) }
-  }, { timestamps: false });
+    updatedBy: { type: app.Sequelize.DATE, allowNull: false, type: app.Sequelize.STRING(32) }
+  }, { timestamps: false, freezeTableName: true });
 
-  return User;
+  return Bill;
 };
