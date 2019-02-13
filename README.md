@@ -4,7 +4,7 @@ This is a lightweight application based on egg.js.
 
 ## Overview
 
-This application is the Server side of [giggle-billbiubiu](https://github.com/Eriasuitor/giggle-billbiubiu), a book-keeping app. Many grammatical mistakes will be found in this document.
+This application is the Server side of [giggle-billbiubiu](https://github.com/Eriasuitor/giggle-billbiubiu), a book-keeping app. **Many grammatical mistakes will be found in this document.**
 
 ## Database Design
 
@@ -57,6 +57,7 @@ date | Date | the date when consume
 #### Column `transfers`
 
 An array of json as follow included in this column. This id will increase based on maximum in database.
+
 field name | type | description
 :-|:-|:-
 id | integer | uniq id
