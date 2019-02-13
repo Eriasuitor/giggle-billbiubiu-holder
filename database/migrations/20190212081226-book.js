@@ -15,7 +15,10 @@ module.exports = {
       createdBy: { type: Sequelize.STRING(64), allowNull: false },
       lastEditedAt: { type: Sequelize.DATE, allowNull: false },
       lastEditedBy: { type: Sequelize.STRING(64), allowNull: false }
-    });
+    }, {
+        "charset": "utf8mb4",
+        "collate": "utf8mb4_unicode_ci"
+      });
   },
 
   down: (queryInterface, Sequelize) => {

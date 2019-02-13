@@ -9,7 +9,7 @@ module.exports = app => {
     transfers: { type: app.Sequelize.JSON, allowNull: false },
     incomes: { type: app.Sequelize.JSON, allowNull: false },
     remark: { type: app.Sequelize.STRING(255), allowNull: true },
-    status: { type: Sequelize.ENUM('synchronized', 'modified', 'deleted', 'new'), allowNull: false },
+    status: { type: app.Sequelize.ENUM('synchronized', 'modified', 'deleted', 'new'), allowNull: false },
     createdAt: { type: app.Sequelize.DATE, allowNull: false },
     createdBy: { type: app.Sequelize.STRING(64), allowNull: false },
     lastEditedAt: { type: app.Sequelize.DATE, allowNull: false },

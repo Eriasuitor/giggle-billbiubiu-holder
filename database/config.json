@@ -4,13 +4,21 @@
     "password": null,
     "database": "giggle-billbiubiu-test",
     "host": "mysql",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "dialectOptions": {
+      "charset": "utf8mb4",
+      "collate": "utf8mb4_unicode_ci"
+    }
   },
   "production": {
     "username": "root",
     "password": null,
     "database": "giggle-billbiubiu",
     "host": "mysql",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "dialectOptions": {
+      "charset": "utf8mb4",
+      "collate": "utf8mb4_unicode_ci"
+    }
   }
 }

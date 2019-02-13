@@ -15,14 +15,14 @@ class BillController extends Controller {
 const generalRule = rule => Object.assign(rule, {
   createdAt: { type: 'int', min: 0 },
   lastEditedAt: { type: 'int', min: 0 },
-  status: { type: 'enum', values: [0, 1, 2, 3] },
+  status: { type: 'enum', values: ['synchronized', 'modified', 'deleted', 'new'] },
   remark: { type: 'string?', max: 255 },
 })
 
 const listRule = rule => ({ type: 'array', itemType: 'object', rule });
 
 const walletRule = generalRule({
-  id: { type: 'int', min: 0 },
+  id: { type: 'int', min: 1 },
   name: { type: 'string', max: 16 },
   balance: 'int',
   color: { type: 'string', max: 16 },
@@ -30,22 +30,22 @@ const walletRule = generalRule({
 })
 
 const billRule = generalRule({
-  id: { type: 'int', required: false, min: 0 },
-  walletId: { type: 'int', min: 0 },
+  id: { type: 'int', required: false, min: 1 },
+  walletId: { type: 'int', min: 1 },
   date: { type: 'int', min: 0 },
   amount: { type: 'int', min: 0 }
 })
 
 const transferRule = generalRule({
-  id: { type: 'int', required: false, min: 0 },
-  fromWalletId: { type: 'int', min: 0 },
-  toWalletId: { type: 'int', min: 0 },
+  id: { type: 'int', required: false, min: 1 },
+  fromWalletId: { type: 'int', min: 1 },
+  toWalletId: { type: 'int', min: 1 },
   date: { type: 'int', min: 0 },
   amount: { type: 'int', min: 0 }
 })
 
 const incomeRule = generalRule({
-  id: { type: 'int', required: false, min: 0 },
+  id: { type: 'int', required: false, min: 1 },
   walletId: { type: 'int', min: 0 },
   date: { type: 'int', min: 0 },
   amount: { type: 'int', min: 0 }
