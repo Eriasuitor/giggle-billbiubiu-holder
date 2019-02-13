@@ -10,14 +10,13 @@ class BillController extends Controller {
 
   async index() {
     this.ctx.body = await this.ctx.service.books.findAll();
-    this.ctx.status = 200
   }
 }
 const generalRule = rule => Object.assign(rule, {
   createdAt: { type: 'int', min: 0 },
   lastEditedAt: { type: 'int', min: 0 },
-  status: { type: 'enum', values: [0, 1, 2] },
-  remark: { type: 'string', max: 255 },
+  status: { type: 'enum', values: [0, 1, 2, 3] },
+  remark: { type: 'string?', max: 255 },
 })
 
 const listRule = rule => ({ type: 'array', itemType: 'object', rule });
@@ -34,7 +33,7 @@ const billRule = generalRule({
   id: { type: 'int', required: false, min: 0 },
   walletId: { type: 'int', min: 0 },
   date: { type: 'int', min: 0 },
-  amount: { type: 'int', min: 0 },
+  amount: { type: 'int', min: 0 }
 })
 
 const transferRule = generalRule({
@@ -42,23 +41,22 @@ const transferRule = generalRule({
   fromWalletId: { type: 'int', min: 0 },
   toWalletId: { type: 'int', min: 0 },
   date: { type: 'int', min: 0 },
-  amount: { type: 'int', min: 0 },
+  amount: { type: 'int', min: 0 }
 })
 
 const incomeRule = generalRule({
   id: { type: 'int', required: false, min: 0 },
   walletId: { type: 'int', min: 0 },
   date: { type: 'int', min: 0 },
-  amount: { type: 'int', min: 0 },
+  amount: { type: 'int', min: 0 }
 })
 
 const synchronizeRule = generalRule({
-  id: { type: 'int', min: 0 },
-  name: { type: 'string', max: '64' },
+  name: { type: 'string', max: 16 },
   wallets: listRule(walletRule),
   bills: listRule(billRule),
   transfers: listRule(transferRule),
-  incomes: listRule(incomeRule),
+  incomes: listRule(incomeRule)
 })
 
 module.exports = BillController;
