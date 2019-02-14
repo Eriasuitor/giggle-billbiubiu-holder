@@ -7,7 +7,7 @@ const wallets = [{
   createdAt: new Date().getTime(),
   lastEditedAt: new Date().getTime(),
   status: 'new',
-  id: 2,
+  id: 1002,
   name: '个人生存',
   balance: 999,
   color: 'pink',
@@ -16,7 +16,7 @@ const wallets = [{
   createdAt: new Date().getTime(),
   lastEditedAt: new Date().getTime(),
   status: 'new',
-  id: 1,
+  id: 1001,
   name: '双人生存',
   balance: 999,
   color: 'pink',
@@ -28,7 +28,7 @@ const bills = [{
   lastEditedAt: new Date().getTime(),
   status: 'new',
   id: 2,
-  walletId: 2,
+  walletId: 1002,
   date: new Date().getTime(),
   amount: 13
 }]
@@ -39,8 +39,8 @@ const transfers = [{
   lastEditedAt: new Date().getTime(),
   status: 'new',
   id: 1,
-  fromWalletId: 1,
-  toWalletId: 2,
+  fromWalletId: 1001,
+  toWalletId: 1002,
   date: new Date().getTime(),
   amount: 50
 }]
@@ -51,7 +51,7 @@ const incomes = [{
   lastEditedAt: new Date().getTime(),
   status: 'new',
   id: 1,
-  walletId: 1,
+  walletId: 1001,
   date: new Date().getTime(),
   amount: 100
 }]
@@ -77,15 +77,46 @@ describe('whole test', () => {
       .expect(resp => {
         bookId = resp.body.id;
         book.status = 'synchronized';
-        console.log(JSON.stringify(resp.body))
       })
   });
   it('should success again', () => {
+    let a = {
+      createdAt: new Date().getTime(),
+      lastEditedAt: new Date().getTime(),
+      name: 'E.J的美好生活',
+      status: 'synchronized',
+      wallets: [{
+        createdAt: new Date().getTime(),
+        lastEditedAt: new Date().getTime(),
+        status: 'new',
+        id: 1002,
+        name: '个人生存',
+        balance: 999,
+        color: 'pink',
+        date: new Date().getTime()
+      }],
+      bills: bills.map(_ => { _.walletId = 1; return _; }).concat([{
+        createdAt: new Date().getTime(),
+        lastEditedAt: new Date().getTime(),
+        status: 'new',
+        id: 1002,
+        walletId: 1002,
+        date: new Date().getTime(),
+        amount: 49
+      }]),
+      transfers: transfers.map(_ => { _.fromWalletId = 1; _.toWalletId = 1002; return _; }),
+      incomes: incomes.map(_ => { _.walletId = 1; return _; })
+    };
     return app.httpRequest()
       .post('/books/' + bookId + '/synchronization')
-      .send(book)
+      .send(a)
       .expect(200)
-      .expect(resp => console.log(JSON.stringify(resp.body)))
+      .expect(resp => {
+        assert(resp.body.wallets.length === 3);
+        assert(resp.body.wallets[0].balance === 74);
+        assert(resp.body.wallets[1].balance === 50);
+        assert(resp.body.wallets[2].balance === 1);
+      })
   });
   // it('should POST again /bills', () => {
   //   return app.httpRequest()

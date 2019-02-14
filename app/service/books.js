@@ -24,6 +24,9 @@ const recordsUpdate = {
         let [dbWallets, reqWallet]
             = findMultiple(wallets, [dbRecord[walletIdFieldName], reqRecord[walletIdFieldName]]);
         dbWallets && (dbWallets.balance -= dbRecord.amount);
+        console.log(reqRecord)
+        console.log(reqWallet)
+        console.log(wallets)
         reqWallet && (reqWallet.balance += reqRecord.amount);
     },
     transfer: (dbRecord = {}, reqRecord = {}, wallets) => {
@@ -71,10 +74,9 @@ const walletRecordStatusOperation = {
         dbWallets.push(wallet);
         let walletId = ++walletIdMax;
         reqFields.forEach(reqField => reqField.forEach(reqRecord => {
-            reqRecord.walletId && reqRecord.walletId === wallet.id && (reqRecord.walletId = walletId);
+            reqRecord.walletId && reqRecord.walletId === wallet.id && reqRecord.status && (reqRecord.walletId = walletId);
             reqRecord.fromWalletId && reqRecord.fromWalletId === wallet.id && (reqRecord.fromWalletId = walletId);
             reqRecord.toWalletId && reqRecord.toWalletId === wallet.id && (reqRecord.toWalletId = walletId);
-
         }))
         wallet.id = walletId;
         return walletIdMax;
@@ -128,23 +130,20 @@ class BookService extends Service {
                 walletIdMax = walletMax && walletMax.id || 0;
 
             wallets.forEach(wallet => {
-                let reqStatus = wallet.status;
+                walletIdMax = walletRecordStatusOperation[wallet.status](reqFields, dbWallets, wallet, walletIdMax) || walletIdMax;
                 wallet.status = Common.recordStatus.synchronized;
-                walletIdMax = walletRecordStatusOperation[reqStatus](reqFields, dbWallets, wallet, walletIdMax) || walletIdMax;
             })
 
             lodash.zip(dbFields, reqFields, fieldNames).forEach(([dbField, reqField, fieldName]) => {
                 let max = lodash.maxBy(dbField, 'id')
                 let idMax = max && max.id || 0;
                 reqField.forEach(reqRecord => {
-                    let reqStatus = reqRecord.status;
+                    idMax = recordStatusOperator[reqRecord.status](dbField, reqRecord, dbWallets, fieldName, idMax) || idMax
                     reqRecord.status = Common.recordStatus.synchronized;
-                    idMax = recordStatusOperator[reqStatus](dbField, reqRecord, wallets, fieldName, idMax) || idMax
                 })
             })
 
             dbBook.status = Common.recordStatus.synchronized;
-
             await bookStatusOperation[bookStatus].call(this, bookId, dbBook, reqBook);
 
             return dbBook;
