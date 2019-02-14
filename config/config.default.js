@@ -22,5 +22,10 @@ module.exports = appInfo => {
     }
   }
 
+  // config.passportGithub = {
+  //   key: '6dbd179e42cd786ea5d7',
+  //   secret: 'da84f7c66d852cf793b76a4a579837950f093a1e'
+  // }
+
   return config;
 };

@@ -9,7 +9,8 @@ class BillController extends Controller {
   }
 
   async index() {
-    this.ctx.body = await this.ctx.service.books.findAll();
+    // this.ctx.body = await this.ctx.service.books.findAll();
+    this.ctx.body = this.ctx.user;
   }
 }
 const generalRule = rule => Object.assign(rule, {
