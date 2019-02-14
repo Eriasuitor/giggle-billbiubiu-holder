@@ -24,9 +24,6 @@ const recordsUpdate = {
         let [dbWallets, reqWallet]
             = findMultiple(wallets, [dbRecord[walletIdFieldName], reqRecord[walletIdFieldName]]);
         dbWallets && (dbWallets.balance -= dbRecord.amount);
-        console.log(reqRecord)
-        console.log(reqWallet)
-        console.log(wallets)
         reqWallet && (reqWallet.balance += reqRecord.amount);
     },
     transfer: (dbRecord = {}, reqRecord = {}, wallets) => {
