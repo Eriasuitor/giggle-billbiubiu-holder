@@ -24,7 +24,7 @@ const listRule = rule => ({ type: 'array', itemType: 'object', rule });
 
 const walletRule = generalRule({
   id: { type: 'int', min: 1 },
-  name: { type: 'string', max: 16 },
+  name: { type: 'string', min: 1, max: 16 },
   balance: 'int',
   color: { type: 'string', max: 16 },
   date: { type: 'int', min: 0 }
@@ -53,7 +53,7 @@ const incomeRule = generalRule({
 })
 
 const synchronizeRule = generalRule({
-  name: { type: 'string', max: 16 },
+  name: { type: 'string', min: 1, max: 16 },
   wallets: listRule(walletRule),
   bills: listRule(billRule),
   transfers: listRule(transferRule),

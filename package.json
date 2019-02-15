@@ -15,7 +15,9 @@
     "mysql2": "^1.6.4",
     "passport-http": "^0.3.0",
     "passport-http-bearer": "^1.0.1",
+    "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "passport-oauth2-jwt-bearer": "^0.2.0",
     "records": "0.0.2",
     "uuid": "^3.3.2"
   },
@@ -27,6 +29,7 @@
     "egg-mock": "^3.14.0",
     "eslint": "^4.11.0",
     "eslint-config-egg": "^6.0.0",
+    "factory-girl": "^5.0.4",
     "sequelize-cli": "^5.4.0",
     "webstorm-disable-index": "^1.2.0"
   },

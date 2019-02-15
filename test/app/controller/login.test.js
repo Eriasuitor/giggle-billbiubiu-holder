@@ -1,98 +1,65 @@
 'use strict';
 
 const { app, assert, mock } = require('egg-mock/bootstrap');
-const uuid = require('uuid')
-
-const wallets = [{
-  createdAt: new Date().getTime(),
-  lastEditedAt: new Date().getTime(),
-  status: 'new',
-  id: 1002,
-  name: '个人生存',
-  balance: 999,
-  color: 'pink',
-  date: new Date().getTime()
-}, {
-  createdAt: new Date().getTime(),
-  lastEditedAt: new Date().getTime(),
-  status: 'new',
-  id: 1001,
-  name: '双人生存',
-  balance: 999,
-  color: 'pink',
-  date: new Date().getTime()
-}]
-
-const bills = [{
-  createdAt: new Date().getTime(),
-  lastEditedAt: new Date().getTime(),
-  status: 'new',
-  id: 2,
-  walletId: 1002,
-  date: new Date().getTime(),
-  amount: 13
-}]
-
-
-const transfers = [{
-  createdAt: new Date().getTime(),
-  lastEditedAt: new Date().getTime(),
-  status: 'new',
-  id: 1,
-  fromWalletId: 1001,
-  toWalletId: 1002,
-  date: new Date().getTime(),
-  amount: 50
-}]
-
-
-const incomes = [{
-  createdAt: new Date().getTime(),
-  lastEditedAt: new Date().getTime(),
-  status: 'new',
-  id: 1,
-  walletId: 1001,
-  date: new Date().getTime(),
-  amount: 100
-}]
-
-let book = {
-  createdAt: new Date().getTime(),
-  lastEditedAt: new Date().getTime(),
-  name: 'E.J的美好生活',
-  status: 'new',
-  wallets,
-  bills,
-  transfers,
-  incomes
-}
-let bookId = 100;
+let token;
 
 describe('/login', () => {
-  it('should login', () => {
+  before(async () => {
+    await app.factory.create('account');
+  });
+  after(() => {
+
+  })
+  it('get jwt', () => {
     return app.httpRequest()
       .post('/login')
       .send({
         username: '123',
-        password: '123'
+        password: '123asdaxasdasdas'
       })
       .expect(resp => {
-        // console.log(resp.body)
+        console.log(resp.body);
+        token = resp.body.token;
       })
-      .expect(302)
+      .expect(200)
   });
-  it('should success /callback', () => {
+  it('get info', () => {
     return app.httpRequest()
-      .get('/authCallback')
+      .get('/me')
+      .set('authorization', `Bearer ${token}`)
       .send({
         username: '123',
-        password: '123'
+        password: '123asdaxasdasdas'
       })
       .expect(resp => {
-        // console.log(resp)
+        console.log(resp.body)
       })
+      .expect(200)
   });
-  // it('should POST again /bills', () => {
+  // it('should login', () => {
+  //   return app.httpRequest()
+  //     .post('/login')
+  //     .send({
+  //       username: '123',
+  //       password: '123'
+  //     })
+  //     .expect(resp => {
+  //       // console.log(resp.body)
+  //     })
+  //     .expect(302)
+  // });
+  // it('should success /callback', () => {
+  //   return app.httpRequest()
+  //     .get('/authCallback')
+  //     .send({
+  //       username: '123',
+  //       password: '123'
+  //     })
+  //     .expect(resp => {
+  //       // console.log(resp)
+  //     })
+  // });
+  // // it('should POST again /bills', () => {
   //   return app.httpRequest()
   //     .post('/bills/synchronization')
   //     .send({

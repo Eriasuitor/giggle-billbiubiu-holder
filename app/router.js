@@ -11,9 +11,8 @@ module.exports = app => {
 
   router.get('/books', controller.books.index);
   router.get('/', controller.books.index);
-  router.get('/authCallback', controller.books.index);
-  router.post('/login', app.passport.authenticate('basic', { session: false }));
-  // router.post('/login', app.passport.authenticate('local'), { session: false });
-
+  router.get('/me', app.passport.authenticate('jwt', { session: false, successRedirect: false }));
+  router.get('/me', controller.books.index);
+  router.post('/login', 'account.login');
   router.post('/books/:bookId/synchronization', controller.books.synchronize);
 };

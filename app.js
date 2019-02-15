@@ -1,24 +1,19 @@
-const BasicStrategy = require('passport-http').BasicStrategy;
-
+const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
 class AppBootHook {
     constructor(app) {
         this.app = app;
     }
 
     async willReady() {
-        console.log('!!!!!!!!!!!!!!!!!')
-        this.app.passport.use(new BasicStrategy(
-            function (req, username, password, done) {
-                const user = {
-                    provider: 'local',
-                    username: '1',
-                    password
-                }
-                this.app.logger.debug('%s %s get user: %j', req.method, req.url, user);
-                console.log("!!!!!!!????????????/")
-                this.app.passport.doVerify(req, user, done);
-            }))
-           this.app.passport.verify(async (ctx, user) => {return true;});
+        this.app.passport.use(
+            new JwtStrategy({
+                secretOrKey: this.app.config.jwt.key,
+                jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
+            }, (payload, done) => {
+                console.log(payload)
+                done(null, { username: payload.username })
+            })
+        )
     }
 }
 
